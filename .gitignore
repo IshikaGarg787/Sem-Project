@@ -1,0 +1,9 @@
+# Python
+__pycache__/
+
+# VS Code
+.vscode/
+
+ml/dataset/
+*.png
+*.jpg
