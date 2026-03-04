@@ -59,3 +59,4 @@ history = model.fit(
 
 model.save("model/freshness_model.h5")
 print("Model saved successfully!")
+print(train_generator.class_indices)
