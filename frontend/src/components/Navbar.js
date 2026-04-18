@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./Navbar.css";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
 
   return (
     <>
@@ -12,10 +13,10 @@ function Navbar() {
 
         {/* Desktop Menu */}
         <div className="nav-links">
-          <Link to="/">Home</Link>
-          <Link to="/scanner">Scanner</Link>
-          <Link to="/upload">Upload</Link>
-          <Link to="/about">About</Link>
+          <Link className={location.pathname === "/" ? "active" : ""} to="/">Home</Link>
+          <Link className={location.pathname === "/scanner" ? "active" : ""} to="/scanner">Scanner</Link>
+          <Link className={location.pathname === "/upload" ? "active" : ""} to="/upload">Upload</Link>
+          <Link className={location.pathname === "/about" ? "active" : ""} to="/about">About</Link>
         </div>
 
         {/* Hamburger */}
@@ -29,6 +30,7 @@ function Navbar() {
         <div className="close-btn" onClick={() => setMenuOpen(false)}>
           ✕
         </div>
+
         <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
         <Link to="/scanner" onClick={() => setMenuOpen(false)}>Scanner</Link>
         <Link to="/upload" onClick={() => setMenuOpen(false)}>Upload</Link>
