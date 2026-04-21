@@ -2,6 +2,13 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./Navbar.css";
 
+const navItems = [
+  { path: "/",        label: "Dashboard", icon: "🏠" },
+  { path: "/scanner", label: "Live Scan",  icon: "📷" },
+  { path: "/upload",  label: "Upload",     icon: "📤" },
+  { path: "/about",   label: "About",      icon: "🌿" },
+];
+
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
@@ -9,32 +16,71 @@ function Navbar() {
   return (
     <>
       <nav className="navbar">
-        <div className="logo">🍎 Freshness AI Detection</div>
-
-        {/* Desktop Menu */}
-        <div className="nav-links">
-          <Link className={location.pathname === "/" ? "active" : ""} to="/">Home</Link>
-          <Link className={location.pathname === "/scanner" ? "active" : ""} to="/scanner">Scanner</Link>
-          <Link className={location.pathname === "/upload" ? "active" : ""} to="/upload">Upload</Link>
-          <Link className={location.pathname === "/about" ? "active" : ""} to="/about">About</Link>
+        {/* Logo */}
+        <div className="navbar-logo">
+          <div className="logo-icon">🥬</div>
+          <span className="logo-text">FreshScan</span>
+          <span className="logo-badge">AI</span>
         </div>
 
-        {/* Hamburger */}
-        <div className="hamburger" onClick={() => setMenuOpen(true)}>
-          ☰
+        {/* Desktop Links */}
+        <div className="nav-links">
+          {navItems.map(({ path, label, icon }) => (
+            <Link
+              key={path}
+              to={path}
+              className={location.pathname === path ? "active" : ""}
+            >
+              <span className="nav-icon">{icon}</span>
+              {label}
+            </Link>
+          ))}
+        </div>
+
+        {/* Right Side */}
+        <div className="nav-right">
+          <div className="nav-status">
+            <span className="status-dot"></span>
+            Model Ready
+          </div>
+
+          {/* Hamburger */}
+          <div className="hamburger" onClick={() => setMenuOpen(true)}>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         </div>
       </nav>
 
+      {/* Overlay */}
+      <div
+        className={`sidebar-overlay ${menuOpen ? "open" : ""}`}
+        onClick={() => setMenuOpen(false)}
+      />
+
       {/* Mobile Sidebar */}
       <div className={`sidebar ${menuOpen ? "open" : ""}`}>
-        <div className="close-btn" onClick={() => setMenuOpen(false)}>
-          ✕
+        <div className="sidebar-header">
+          <span className="sidebar-logo">🥬 FreshScan</span>
+          <button className="close-btn" onClick={() => setMenuOpen(false)}>✕</button>
         </div>
 
-        <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
-        <Link to="/scanner" onClick={() => setMenuOpen(false)}>Scanner</Link>
-        <Link to="/upload" onClick={() => setMenuOpen(false)}>Upload</Link>
-        <Link to="/about" onClick={() => setMenuOpen(false)}>About</Link>
+        <nav className="sidebar-nav">
+          {navItems.map(({ path, label, icon }) => (
+            <Link
+              key={path}
+              to={path}
+              className={location.pathname === path ? "active" : ""}
+              onClick={() => setMenuOpen(false)}
+            >
+              <span style={{ fontSize: "20px" }}>{icon}</span>
+              {label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="sidebar-food-art">🍎🥦🍋🫐🥕</div>
       </div>
     </>
   );
