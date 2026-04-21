@@ -9,7 +9,7 @@ function Navbar() {
   return (
     <>
       <nav className="navbar">
-        <div className="logo">🍎 Freshness AI</div>
+        <div className="logo">🍎 Freshness AI Detection</div>
 
         {/* Desktop Menu */}
         <div className="nav-links">

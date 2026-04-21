@@ -1,20 +1,19 @@
 .navbar {
-  background: rgba(31, 41, 55, 0.8);
-  backdrop-filter: blur(10px);
-  color: white;
-  padding: 15px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 15px 30px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  color: white;
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .logo {
   font-size: 20px;
   font-weight: bold;
-  letter-spacing: 1px;
 }
 
 /* Desktop Links */
@@ -25,43 +24,24 @@
 
 .nav-links a {
   text-decoration: none;
-  color: #d1d5db;
+  color: #ddd;
   font-size: 16px;
   transition: 0.3s;
-  position: relative;
 }
 
-/* Hover Effect */
 .nav-links a:hover {
-  color: white;
+  color: #fff;
 }
 
-/* Active Link */
-.nav-links a.active {
+.nav-links .active {
   color: #10b981;
   font-weight: bold;
-}
-
-/* Underline Animation */
-.nav-links a::after {
-  content: "";
-  position: absolute;
-  width: 0%;
-  height: 2px;
-  background: #10b981;
-  bottom: -5px;
-  left: 0;
-  transition: 0.3s;
-}
-
-.nav-links a:hover::after {
-  width: 100%;
 }
 
 /* Hamburger */
 .hamburger {
   display: none;
-  font-size: 24px;
+  font-size: 22px;
   cursor: pointer;
 }
 
@@ -69,16 +49,14 @@
 .sidebar {
   position: fixed;
   top: 0;
-  right: -260px;
-  width: 260px;
+  right: -250px;
+  width: 250px;
   height: 100%;
-  background: #111827;
-  padding: 40px 20px;
+  background: #111;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  transition: right 0.3s ease;
-  z-index: 1000;
+  padding: 20px;
+  transition: 0.3s;
 }
 
 .sidebar.open {
@@ -86,24 +64,19 @@
 }
 
 .sidebar a {
+  margin: 15px 0;
   text-decoration: none;
-  color: #e5e7eb;
+  color: white;
   font-size: 18px;
-  transition: 0.3s;
-}
-
-.sidebar a:hover {
-  color: #10b981;
 }
 
 .close-btn {
-  align-self: flex-end;
   font-size: 22px;
   cursor: pointer;
-  margin-bottom: 20px;
+  align-self: flex-end;
 }
 
-/* 📱 Mobile Responsive */
+/* Responsive */
 @media (max-width: 768px) {
   .nav-links {
     display: none;
