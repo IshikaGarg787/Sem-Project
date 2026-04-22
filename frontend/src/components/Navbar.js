@@ -20,7 +20,6 @@ function Navbar() {
         <div className="navbar-logo">
           <div className="logo-icon">🥬</div>
           <span className="logo-text">FreshScan</span>
-          <span className="logo-badge">AI</span>
         </div>
 
         {/* Desktop Links */}
@@ -39,11 +38,6 @@ function Navbar() {
 
         {/* Right Side */}
         <div className="nav-right">
-          <div className="nav-status">
-            <span className="status-dot"></span>
-            Model Ready
-          </div>
-
           {/* Hamburger */}
           <div className="hamburger" onClick={() => setMenuOpen(true)}>
             <span></span>
