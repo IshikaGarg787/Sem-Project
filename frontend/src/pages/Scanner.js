@@ -213,15 +213,6 @@ export default function Scanner() {
                   <span className="guide-text">{text}</span>
                 </div>
               ))}
-
-              <div className="guide-food-strip">
-                <div className="gfs-label">Best detected foods</div>
-                <div className="gfs-items">
-                  {["🍎","🥦","🍋","🥕","🍇","🍅","🍌","🥑"].map(f => (
-                    <span key={f} className="gfs-item">{f}</span>
-                  ))}
-                </div>
-              </div>
             </div>
           )}
         </div>
@@ -394,16 +385,6 @@ export default function Scanner() {
         .guide-row:last-of-type { border: none; }
         .guide-icon { font-size: 20px; flex-shrink: 0; }
         .guide-text { font-size: 14px; font-weight: 500; color: var(--text-2); }
-
-        .guide-food-strip { margin-top: 22px; background: var(--sky); border-radius: var(--radius-md); padding: 16px; }
-        .gfs-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
-        .gfs-items { display: flex; flex-wrap: wrap; gap: 8px; }
-        .gfs-item {
-          width: 38px; height: 38px; background: white; border-radius: 10px;
-          display: flex; align-items: center; justify-content: center; font-size: 20px;
-          border: 1px solid var(--border); transition: var(--spring);
-        }
-        .gfs-item:hover { transform: scale(1.2) rotate(10deg); background: var(--mint); }
 
         /* Responsive */
         @media (max-width: 900px) {
