@@ -52,20 +52,6 @@
   letter-spacing: -0.5px;
 }
 
-.logo-badge {
-  font-size: 10px;
-  font-weight: 700;
-  background: linear-gradient(135deg, #f97316, #fbbf24);
-  color: white;
-  padding: 2px 7px;
-  border-radius: 20px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  margin-left: 2px;
-  align-self: flex-start;
-  margin-top: 2px;
-}
-
 /* ── Desktop Nav Links ── */
 .nav-links {
   display: flex;
@@ -117,27 +103,6 @@
   display: flex;
   align-items: center;
   gap: 12px;
-}
-
-.nav-status {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  padding: 6px 14px;
-  border-radius: 50px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--fresh-green);
-}
-
-.status-dot {
-  width: 8px;
-  height: 8px;
-  background: #22c55e;
-  border-radius: 50%;
-  animation: pulse-green 2s ease-in-out infinite;
 }
 
 /* ── Hamburger ── */
@@ -269,6 +234,6 @@
 /* ── Responsive ── */
 @media (max-width: 900px) {
   .navbar { padding: 0 20px; }
-  .nav-links, .nav-status { display: none; }
+  .nav-links { display: none; }
   .hamburger { display: flex; }
 }
