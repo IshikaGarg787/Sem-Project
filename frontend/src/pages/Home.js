@@ -54,40 +54,6 @@ function Bar({ label, percent, color, emoji }) {
   );
 }
 
-/* ─── Stat Card ────────────────────────────── */
-function StatCard({ emoji, value, label, sub, color, delay }) {
-  const [count, setCount] = useState(0);
-  const target = parseInt(value);
-
-  useEffect(() => {
-    if (isNaN(target)) return;
-    let start = 0;
-    const step = target / 40;
-    const t = setTimeout(() => {
-      const id = setInterval(() => {
-        start += step;
-        if (start >= target) { setCount(target); clearInterval(id); }
-        else setCount(Math.floor(start));
-      }, 30);
-    }, delay);
-    return () => clearTimeout(t);
-  }, [target, delay]);
-
-  return (
-    <div className="stat-card" style={{ "--accent": color }}>
-      <div className="stat-emoji">{emoji}</div>
-      <div className="stat-body">
-        <div className="stat-value" style={{ color }}>
-          {isNaN(target) ? value : count}{typeof value === "string" && value.includes("%") ? "%" : ""}
-        </div>
-        <div className="stat-label">{label}</div>
-        {sub && <div className="stat-sub">{sub}</div>}
-      </div>
-      <div className="stat-bg-circle" style={{ background: `${color}18` }} />
-    </div>
-  );
-}
-
 /* ─── Recent Scan Row ──────────────────────── */
 function ScanRow({ food, result, conf, time, emoji }) {
   const isFresh = result === "Fresh";
@@ -165,14 +131,6 @@ export default function Home() {
           </div>
           <div className="hero-center-icon">🥬</div>
         </div>
-      </div>
-
-      {/* ── Stat Cards ── */}
-      <div className="stats-row">
-        <StatCard emoji="🔬" value="1248"    label="Total Scans"      sub="↑ 12% this week"  color="#16a34a" delay={0}   />
-        <StatCard emoji="✅" value="94"      label="Accuracy Rate"    sub="Last 30 days"      color="#84cc16" delay={100} />
-        <StatCard emoji="🚨" value="187"     label="Spoilage Alerts"  sub="Prevented waste"   color="#f97316" delay={200} />
-        <StatCard emoji="⚡" value="48"      label="Avg Latency (ms)" sub="Real-time speed"   color="#fbbf24" delay={300} />
       </div>
 
       {/* ── Middle Grid ── */}
@@ -417,34 +375,6 @@ export default function Home() {
           animation: float 4s ease-in-out infinite;
         }
 
-        /* ── Stats ── */
-        .stats-row {
-          position: relative; z-index: 1;
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 20px;
-          margin-bottom: 28px;
-        }
-        .stat-card {
-          background: white; border: 1px solid var(--border);
-          border-radius: var(--radius-lg); padding: 24px;
-          display: flex; align-items: center; gap: 16px;
-          position: relative; overflow: hidden;
-          transition: var(--spring);
-          box-shadow: var(--shadow-sm);
-          animation: fadeUp 0.6s ease both;
-        }
-        .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-        .stat-emoji { font-size: 36px; flex-shrink: 0; }
-        .stat-value { font-family: var(--font-display); font-size: 30px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
-        .stat-label { font-size: 13px; font-weight: 600; color: var(--text-2); }
-        .stat-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-        .stat-bg-circle {
-          position: absolute; right: -20px; bottom: -20px;
-          width: 80px; height: 80px; border-radius: 50%;
-          pointer-events: none;
-        }
-
         /* ── Dashboard Grid ── */
         .dashboard-grid {
           position: relative; z-index: 1;
@@ -560,7 +490,6 @@ export default function Home() {
         @media (max-width: 1100px) {
           .dashboard-grid { grid-template-columns: 1fr 1fr; }
           .card-donut { grid-column: 1 / -1; }
-          .stats-row { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 768px) {
           .home-page { padding: 20px 16px 40px; }
@@ -569,9 +498,8 @@ export default function Home() {
           .hero-title { font-size: 30px; }
           .dashboard-grid { grid-template-columns: 1fr; }
           .actions-grid { grid-template-columns: 1fr; }
-          .stats-row { grid-template-columns: repeat(2, 1fr); }
         }
       `}</style>
     </div>
   );
-} 
+}
