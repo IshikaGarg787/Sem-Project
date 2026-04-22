@@ -207,15 +207,6 @@ export default function Upload() {
                   <span className="tip-text">{tip}</span>
                 </div>
               ))}
-
-              <div className="supported-foods">
-                <div className="sf-title">Supported Foods</div>
-                <div className="sf-grid">
-                  {["🍎","🍌","🥦","🍅","🥕","🍋","🍇","🥑","🌽","🍓","🥬","🧅"].map(f => (
-                    <span key={f} className="sf-item">{f}</span>
-                  ))}
-                </div>
-              </div>
             </div>
           )}
         </div>
@@ -422,17 +413,6 @@ export default function Upload() {
         .tip-row:last-of-type { border: none; }
         .tip-icon { font-size: 20px; flex-shrink: 0; }
         .tip-text { font-size: 14px; font-weight: 500; color: var(--text-2); }
-
-        .supported-foods { margin-top: 22px; }
-        .sf-title { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
-        .sf-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-        .sf-item {
-          width: 40px; height: 40px; background: var(--sky);
-          border-radius: 10px; display: flex; align-items: center; justify-content: center;
-          font-size: 20px; border: 1px solid var(--border);
-          transition: var(--spring);
-        }
-        .sf-item:hover { transform: scale(1.2) rotate(10deg); background: var(--mint); }
 
         /* ── Responsive ── */
         @media (max-width: 900px) {
