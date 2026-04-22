@@ -30,11 +30,6 @@ export default function About() {
 
       {/* ── Hero ── */}
       <div className="about-hero">
-        <div className="about-hero-food">
-          {["🍎","🥦","🍋","🥕","🍇","🌽"].map((f, i) => (
-            <span key={i} className="hero-food-float" style={{ "--delay": `${i * 0.6}s` }}>{f}</span>
-          ))}
-        </div>
         <div className="about-tag">🌿 Open Source Project</div>
         <h1 className="about-title">
           About <span className="about-title-accent">FreshScan AI</span>
@@ -42,19 +37,28 @@ export default function About() {
         <p className="about-intro">
           FreshScan AI is a semester-end academic project that combines computer vision
           and IoT sensor data to build a practical, real-world food freshness classifier.
-          Built with love for better food safety. 🌱
+          Built with love for better food safety.
         </p>
       </div>
 
       {/* ── Mission ── */}
       <div className="mission-banner">
+        <div className="mission-accent-bar" />
         <div className="mission-inner">
-          <div className="mission-icon">🎯</div>
-          <div>
+          <div className="mission-icon-wrap">
+            <div className="mission-icon">🎯</div>
+          </div>
+          <div className="mission-content">
+            <div className="mission-eyebrow">Our Purpose</div>
             <div className="mission-title">Our Mission</div>
             <div className="mission-text">
               Reduce food waste and improve food safety using accessible AI technology —
               so everyone knows exactly when their produce is at its freshest.
+            </div>
+            <div className="mission-pills">
+              <span className="mission-pill">🌱 Reduce Waste</span>
+              <span className="mission-pill">🤖 AI-Powered</span>
+              <span className="mission-pill">🛡️ Food Safety</span>
             </div>
           </div>
         </div>
@@ -127,9 +131,18 @@ export default function About() {
 
       {/* ── Footer Banner ── */}
       <div className="about-footer-banner">
-        <div className="afb-food">🍎🥦🍋🫐🥕🌽🍓🥑</div>
-        <h3 className="afb-title">Built for Better Food Safety 🌿</h3>
+        <div className="afb-glow" />
+        <div className="afb-badge">FreshScan AI</div>
+        <h3 className="afb-title">Built for Better Food Safety</h3>
         <p className="afb-sub">A semester project by passionate students. Reducing food waste, one scan at a time.</p>
+        <div className="afb-divider" />
+        <div className="afb-stats">
+          <div className="afb-stat"><span className="afb-stat-val">94%</span><span className="afb-stat-label">Accuracy</span></div>
+          <div className="afb-stat-sep" />
+          <div className="afb-stat"><span className="afb-stat-val">30+</span><span className="afb-stat-label">Categories</span></div>
+          <div className="afb-stat-sep" />
+          <div className="afb-stat"><span className="afb-stat-val">50K+</span><span className="afb-stat-label">Images</span></div>
+        </div>
       </div>
 
       <style>{`
@@ -149,16 +162,6 @@ export default function About() {
           position: relative; z-index: 1;
           text-align: center; padding: 60px 20px 50px;
           animation: fadeUp 0.6s ease both;
-        }
-        .about-hero-food {
-          display: flex; justify-content: center; gap: 16px;
-          margin-bottom: 24px;
-        }
-        .hero-food-float {
-          font-size: 32px;
-          animation: float 4s ease-in-out infinite;
-          animation-delay: var(--delay);
-          display: inline-block;
         }
         .about-tag {
           display: inline-flex; align-items: center; gap: 8px;
@@ -182,19 +185,54 @@ export default function About() {
           margin: 0 auto; line-height: 1.8;
         }
 
-        /* Mission */
+        /* Mission — redesigned */
         .mission-banner {
           position: relative; z-index: 1;
-          background: linear-gradient(135deg, #f0fdf4, #ecfdf5, #fefce8);
-          border: 1.5px solid #bbf7d0; border-radius: var(--radius-xl);
-          padding: 28px 36px; margin-bottom: 48px; max-width: 900px; margin: 0 auto 48px;
-          box-shadow: var(--shadow-sm);
+          background: white;
+          border: 1px solid #e2e8f0;
+          border-radius: 20px;
+          padding: 0; margin: 0 auto 48px;
+          max-width: 900px;
+          box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+          overflow: hidden;
           animation: fadeUp 0.6s ease 0.1s both;
         }
-        .mission-inner { display: flex; align-items: flex-start; gap: 20px; }
-        .mission-icon { font-size: 36px; flex-shrink: 0; }
-        .mission-title { font-family: var(--font-display); font-size: 20px; font-weight: 800; color: var(--leaf); margin-bottom: 6px; }
-        .mission-text { font-size: 15px; color: var(--text-2); line-height: 1.7; }
+        .mission-accent-bar {
+          height: 4px;
+          background: linear-gradient(90deg, #16a34a, #84cc16, #0ea5e9, #8b5cf6);
+          width: 100%;
+        }
+        .mission-inner {
+          display: flex; align-items: flex-start; gap: 24px;
+          padding: 30px 36px;
+        }
+        .mission-icon-wrap {
+          background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+          border: 1.5px solid #bbf7d0;
+          border-radius: 16px;
+          width: 64px; height: 64px;
+          display: flex; align-items: center; justify-content: center;
+          flex-shrink: 0;
+        }
+        .mission-icon { font-size: 30px; }
+        .mission-content { flex: 1; }
+        .mission-eyebrow {
+          font-size: 10px; font-weight: 800; letter-spacing: 2.5px;
+          text-transform: uppercase; color: #16a34a; margin-bottom: 4px;
+        }
+        .mission-title {
+          font-family: var(--font-display); font-size: 22px; font-weight: 900;
+          color: var(--text); margin-bottom: 10px;
+        }
+        .mission-text {
+          font-size: 15px; color: var(--text-2); line-height: 1.75; margin-bottom: 16px;
+        }
+        .mission-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+        .mission-pill {
+          background: #f0fdf4; border: 1px solid #bbf7d0;
+          color: #15803d; font-size: 12px; font-weight: 700;
+          padding: 4px 12px; border-radius: 50px;
+        }
 
         /* Sections */
         .section { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto 52px; animation: fadeUp 0.6s ease 0.15s both; }
@@ -270,17 +308,47 @@ export default function About() {
         .team-role { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; }
         .team-bar { height: 3px; border-radius: 20px; }
 
-        /* Footer Banner */
+        /* Footer Banner — redesigned */
         .about-footer-banner {
           position: relative; z-index: 1;
-          background: linear-gradient(135deg, #166534, #15803d, #16a34a);
-          border-radius: var(--radius-xl); padding: 44px;
+          background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f2027 100%);
+          border-radius: 24px; padding: 52px 44px;
           text-align: center; max-width: 1000px; margin: 0 auto;
           overflow: hidden; animation: fadeUp 0.6s ease 0.3s both;
+          border: 1px solid rgba(255,255,255,0.08);
+          box-shadow: 0 20px 60px rgba(0,0,0,0.25);
         }
-        .afb-food { font-size: 28px; letter-spacing: 6px; margin-bottom: 16px; opacity: 0.7; }
-        .afb-title { font-family: var(--font-display); font-size: 28px; font-weight: 900; color: white; margin-bottom: 10px; }
-        .afb-sub { font-size: 15px; color: #86efac; }
+        .afb-glow {
+          position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+          width: 400px; height: 200px;
+          background: radial-gradient(ellipse, rgba(22,163,74,0.35), transparent 70%);
+          pointer-events: none;
+        }
+        .afb-badge {
+          display: inline-block;
+          background: rgba(22,163,74,0.15);
+          border: 1px solid rgba(22,163,74,0.4);
+          color: #4ade80;
+          font-size: 11px; font-weight: 800; letter-spacing: 2px;
+          text-transform: uppercase;
+          padding: 5px 16px; border-radius: 50px;
+          margin-bottom: 18px;
+        }
+        .afb-title {
+          font-family: var(--font-display); font-size: 30px; font-weight: 900;
+          color: white; margin-bottom: 12px; letter-spacing: -0.5px;
+        }
+        .afb-sub { font-size: 15px; color: #94a3b8; line-height: 1.7; max-width: 480px; margin: 0 auto; }
+        .afb-divider {
+          width: 60px; height: 2px;
+          background: linear-gradient(90deg, #16a34a, #0ea5e9);
+          border-radius: 2px; margin: 28px auto 24px;
+        }
+        .afb-stats { display: flex; justify-content: center; align-items: center; gap: 0; }
+        .afb-stat { display: flex; flex-direction: column; align-items: center; padding: 0 32px; }
+        .afb-stat-val { font-family: var(--font-display); font-size: 26px; font-weight: 900; color: #4ade80; }
+        .afb-stat-label { font-size: 12px; color: #64748b; font-weight: 600; margin-top: 2px; }
+        .afb-stat-sep { width: 1px; height: 36px; background: rgba(255,255,255,0.1); }
 
         /* Responsive */
         @media (max-width: 900px) {
@@ -290,10 +358,15 @@ export default function About() {
           .team-grid { grid-template-columns: repeat(2, 1fr); }
           .about-stats { grid-template-columns: repeat(2, 1fr); }
           .about-title { font-size: 36px; }
+          .mission-inner { flex-direction: column; gap: 16px; }
+          .afb-stat { padding: 0 18px; }
         }
         @media (max-width: 500px) {
           .steps-grid, .stack-grid, .team-grid, .about-stats { grid-template-columns: 1fr; }
-          .hero-food-float { font-size: 24px; }
+          .about-footer-banner { padding: 36px 24px; }
+          .afb-stats { gap: 0; }
+          .afb-stat { padding: 0 12px; }
+          .afb-stat-val { font-size: 20px; }
         }
       `}</style>
     </div>
