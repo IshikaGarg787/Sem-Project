@@ -1,73 +1,35 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-/* ─── Mini donut chart ─────────────────────── */
-function DonutChart({ percent, color, size = 80 }) {
-  const r = (size - 12) / 2;
-  const circ = 2 * Math.PI * r;
-  const [offset, setOffset] = useState(circ);
-
-  useEffect(() => {
-    const t = setTimeout(() => setOffset(circ * (1 - percent / 100)), 300);
-    return () => clearTimeout(t);
-  }, [percent, circ]);
-
-  return (
-    <svg width={size} height={size} style={{ transform: "rotate(-90deg)" }}>
-      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#e8f5e9" strokeWidth="10" />
-      <circle
-        cx={size / 2} cy={size / 2} r={r}
-        fill="none" stroke={color} strokeWidth="10"
-        strokeDasharray={circ} strokeDashoffset={offset}
-        strokeLinecap="round"
-        style={{ transition: "stroke-dashoffset 1.2s cubic-bezier(0.4,0,0.2,1)" }}
-      />
-    </svg>
-  );
-}
-
-/* ─── Animated bar ─────────────────────────── */
-function Bar({ label, percent, color, emoji }) {
-  const [width, setWidth] = useState(0);
-  useEffect(() => {
-    const t = setTimeout(() => setWidth(percent), 400);
-    return () => clearTimeout(t);
-  }, [percent]);
-
-  return (
-    <div style={{ marginBottom: "14px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
-        <span style={{ fontSize: "13px", fontWeight: "600", color: "var(--text)", display: "flex", alignItems: "center", gap: "6px" }}>
-          <span>{emoji}</span>{label}
-        </span>
-        <span style={{ fontSize: "13px", fontWeight: "700", color }}>{percent}%</span>
-      </div>
-      <div style={{ height: "8px", background: "#e8f5e9", borderRadius: "20px", overflow: "hidden" }}>
-        <div style={{
-          height: "100%", background: `linear-gradient(90deg, ${color}, ${color}dd)`,
-          borderRadius: "20px", width: `${width}%`,
-          transition: "width 1.2s cubic-bezier(0.4,0,0.2,1)",
-          boxShadow: `0 0 8px ${color}66`,
-        }} />
-      </div>
-    </div>
-  );
-}
-
 /* ─── Recent Scan Row ──────────────────────── */
-function ScanRow({ food, result, conf, time, emoji }) {
+function ScanRow({ food, result, conf, time, emoji, index }) {
   const isFresh = result === "Fresh";
   return (
-    <div className="scan-row">
+    <div className="scan-row" style={{ animationDelay: `${index * 80}ms` }}>
       <div className="scan-food">
-        <span className="scan-emoji">{emoji}</span>
-        <span className="scan-name">{food}</span>
+        <div className="scan-emoji-wrap">{emoji}</div>
+        <div>
+          <span className="scan-name">{food}</span>
+        </div>
       </div>
       <span className={`scan-badge ${isFresh ? "badge-fresh" : "badge-spoiled"}`}>
         {isFresh ? "✅" : "❌"} {result}
       </span>
-      <span className="scan-conf">{conf}%</span>
-      <span className="scan-time">{time}</span>
+      <div className="conf-wrap">
+        <div className="conf-bar-bg">
+          <div
+            className="conf-bar-fill"
+            style={{
+              width: `${conf}%`,
+              background: isFresh
+                ? "linear-gradient(90deg, #16a34a, #4ade80)"
+                : "linear-gradient(90deg, #ef4444, #f97316)",
+            }}
+          />
+        </div>
+        <span className="scan-conf">{conf}%</span>
+      </div>
+      <span className="scan-time">🕐 {time}</span>
     </div>
   );
 }
@@ -84,12 +46,8 @@ export default function Home() {
     { food: "Strawberry", result: "Spoiled",  conf: 85, time: "1 hr ago",   emoji: "🍓" },
   ];
 
-  const accuracy = [
-    { label: "Fruits",      percent: 96, color: "#f97316", emoji: "🍊" },
-    { label: "Vegetables",  percent: 94, color: "#16a34a", emoji: "🥦" },
-    { label: "Berries",     percent: 91, color: "#dc2626", emoji: "🍓" },
-    { label: "Root Veggies",percent: 88, color: "#f59e0b", emoji: "🥕" },
-  ];
+  const freshCount = recentScans.filter(s => s.result === "Fresh").length;
+  const spoiledCount = recentScans.length - freshCount;
 
   return (
     <div className="home-page">
@@ -133,86 +91,51 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── Middle Grid ── */}
-      <div className="dashboard-grid">
-
-        {/* Accuracy chart */}
-        <div className="card card-accuracy animate-fadeUp delay-2">
-          <div className="card-header">
-            <h3 className="card-title">📊 Detection Accuracy</h3>
-            <span className="card-badge">By Category</span>
+      {/* ── Recent Scans — Full Width ── */}
+      <div className="scans-section animate-fadeUp delay-2">
+        {/* Section header */}
+        <div className="scans-section-header">
+          <div>
+            <h2 className="scans-section-title">🕐 Recent Scans</h2>
+            <p className="scans-section-sub">Live feed of your latest freshness checks</p>
           </div>
-          {accuracy.map((a) => (
-            <Bar key={a.label} {...a} />
-          ))}
-          <div className="accuracy-footer">
-            <div className="accuracy-donut">
-              <DonutChart percent={94} color="#16a34a" size={90} />
-              <div className="donut-label">
-                <span className="donut-value">94%</span>
-                <span className="donut-sub">Overall</span>
-              </div>
+          <div className="scans-stats">
+            <div className="stat-pill stat-fresh">
+              <span className="stat-pill-dot" style={{ background: "#16a34a" }} />
+              <span>{freshCount} Fresh</span>
             </div>
-            <div className="accuracy-summary">
-              <p>Model trained on <strong>50,000+</strong> food images across <strong>30 categories</strong>.</p>
-              <p style={{ marginTop: "8px", color: "var(--text-muted)", fontSize: "12px" }}>Last updated: April 2025</p>
+            <div className="stat-pill stat-spoiled">
+              <span className="stat-pill-dot" style={{ background: "#ef4444" }} />
+              <span>{spoiledCount} Spoiled</span>
+            </div>
+            <div className="live-indicator">
+              <span className="live-dot" />
+              LIVE
             </div>
           </div>
         </div>
 
-        {/* Recent Scans */}
-        <div className="card card-scans animate-fadeUp delay-3">
-          <div className="card-header">
-            <h3 className="card-title">🕐 Recent Scans</h3>
-            <span className="card-badge card-badge-orange">Live Feed</span>
+        {/* Table card */}
+        <div className="scans-card">
+          <div className="scans-table-header">
+            <span>Food Item</span>
+            <span>Result</span>
+            <span>Confidence</span>
+            <span>Time</span>
           </div>
           <div className="scans-list">
-            <div className="scan-row scan-header">
-              <span>Food Item</span>
-              <span>Result</span>
-              <span>Conf.</span>
-              <span>Time</span>
-            </div>
-            {recentScans.map((s, i) => <ScanRow key={i} {...s} />)}
+            {recentScans.map((s, i) => <ScanRow key={i} index={i} {...s} />)}
           </div>
-          <button className="view-all-btn" onClick={() => navigate("/upload")}>
-            View All Scans →
-          </button>
-        </div>
-
-        {/* Fresh vs Spoiled Donut */}
-        <div className="card card-donut animate-fadeUp delay-4">
-          <div className="card-header">
-            <h3 className="card-title">🥗 Fresh vs Spoiled</h3>
-            <span className="card-badge">Today</span>
-          </div>
-          <div className="donut-big-wrap">
-            <div style={{ position: "relative", display: "inline-block" }}>
-              <DonutChart percent={73} color="#16a34a" size={160} />
-              <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                <span style={{ fontSize: "28px", fontWeight: "800", color: "#16a34a" }}>73%</span>
-                <span style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: "600" }}>FRESH</span>
-              </div>
-            </div>
-          </div>
-          <div className="donut-legend">
-            <div className="legend-item">
-              <span className="legend-dot" style={{ background: "#16a34a" }} />
-              <span>Fresh (73%)</span>
-            </div>
-            <div className="legend-item">
-              <span className="legend-dot" style={{ background: "#f97316" }} />
-              <span>Spoiled (27%)</span>
-            </div>
-          </div>
-          <div className="donut-tip">
-            🌡️ Avg temp today: <strong>22°C</strong> — ideal conditions!
+          <div className="scans-footer">
+            <button className="view-all-btn" onClick={() => navigate("/upload")}>
+              View All Scans →
+            </button>
           </div>
         </div>
       </div>
 
       {/* ── Quick Action Cards ── */}
-      <div className="quick-actions animate-fadeUp delay-5">
+      <div className="quick-actions animate-fadeUp delay-3">
         <h2 className="section-title">⚡ Quick Actions</h2>
         <div className="actions-grid">
           {[
@@ -233,7 +156,7 @@ export default function Home() {
       </div>
 
       {/* ── Freshness Tips Banner ── */}
-      <div className="tips-banner animate-fadeUp delay-5">
+      <div className="tips-banner animate-fadeUp delay-4">
         <div className="tips-inner">
           <span className="tips-title">💡 Freshness Tips</span>
           <div className="tips-scroll">
@@ -375,77 +298,150 @@ export default function Home() {
           animation: float 4s ease-in-out infinite;
         }
 
-        /* ── Dashboard Grid ── */
-        .dashboard-grid {
+        /* ── Recent Scans Section ── */
+        .scans-section {
           position: relative; z-index: 1;
-          display: grid;
-          grid-template-columns: 1fr 1.4fr 0.9fr;
-          gap: 24px;
           margin-bottom: 28px;
         }
+        .scans-section-header {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          margin-bottom: 16px;
+          flex-wrap: wrap;
+          gap: 12px;
+        }
+        .scans-section-title {
+          font-family: var(--font-display);
+          font-size: 22px; font-weight: 800;
+          color: var(--text); margin: 0 0 4px;
+        }
+        .scans-section-sub {
+          font-size: 13px; color: var(--text-muted);
+          margin: 0;
+        }
+        .scans-stats {
+          display: flex; align-items: center; gap: 10px;
+        }
+        .stat-pill {
+          display: flex; align-items: center; gap: 6px;
+          padding: 6px 14px; border-radius: 50px;
+          font-size: 13px; font-weight: 700;
+        }
+        .stat-fresh { background: #dcfce7; color: #166534; }
+        .stat-spoiled { background: #fef2f2; color: #991b1b; }
+        .stat-pill-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .live-indicator {
+          display: flex; align-items: center; gap: 6px;
+          padding: 6px 14px; border-radius: 50px;
+          background: #fff7ed; color: #c2410c;
+          font-size: 11px; font-weight: 800;
+          letter-spacing: 1px;
+          border: 1px solid #fed7aa;
+        }
+        .live-dot {
+          width: 7px; height: 7px; border-radius: 50%;
+          background: #f97316;
+          animation: pulse-dot 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.5; transform: scale(1.4); }
+        }
 
-        /* ── Cards ── */
-        .card {
-          background: white; border: 1px solid var(--border);
-          border-radius: var(--radius-lg); padding: 28px;
+        .scans-card {
+          background: white;
+          border: 1px solid var(--border);
+          border-radius: var(--radius-lg);
           box-shadow: var(--shadow-sm);
+          overflow: hidden;
           transition: var(--transition);
         }
-        .card:hover { box-shadow: var(--shadow-md); }
-        .card-header {
-          display: flex; align-items: center; justify-content: space-between;
-          margin-bottom: 22px;
-        }
-        .card-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--text); }
-        .card-badge {
-          background: #dcfce7; color: #166534;
+        .scans-card:hover { box-shadow: var(--shadow-md); }
+
+        .scans-table-header {
+          display: grid;
+          grid-template-columns: 1fr 160px 220px 140px;
+          padding: 14px 28px;
+          background: #f8fafc;
+          border-bottom: 1px solid var(--border);
           font-size: 11px; font-weight: 700;
-          padding: 4px 10px; border-radius: 20px;
-          text-transform: uppercase; letter-spacing: 0.5px;
+          color: var(--text-muted);
+          text-transform: uppercase; letter-spacing: 0.8px;
         }
-        .card-badge-orange { background: #fff7ed; color: #c2410c; }
 
-        /* Accuracy footer */
-        .accuracy-footer { display: flex; align-items: center; gap: 18px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
-        .accuracy-donut { position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .donut-label { position: absolute; text-align: center; }
-        .donut-value { display: block; font-family: var(--font-display); font-size: 18px; font-weight: 800; color: #16a34a; }
-        .donut-sub { display: block; font-size: 10px; color: var(--text-muted); font-weight: 700; }
-        .accuracy-summary { font-size: 13px; color: var(--text-2); line-height: 1.6; }
+        .scans-list { display: flex; flex-direction: column; padding: 8px 0; }
 
-        /* Scans list */
-        .scans-list { display: flex; flex-direction: column; gap: 2px; }
         .scan-row {
-          display: grid; grid-template-columns: 1fr 120px 60px 90px;
-          align-items: center; padding: 10px 12px;
-          border-radius: var(--radius-sm);
-          transition: var(--transition);
+          display: grid;
+          grid-template-columns: 1fr 160px 220px 140px;
+          align-items: center;
+          padding: 14px 28px;
+          border-bottom: 1px solid #f1f5f9;
+          transition: background 0.15s ease;
+          animation: fadeInRow 0.4s ease both;
         }
-        .scan-row:not(.scan-header):hover { background: #f0fdf4; }
-        .scan-header { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 6px; border-bottom: 1px solid var(--border); margin-bottom: 4px; }
-        .scan-food { display: flex; align-items: center; gap: 9px; }
-        .scan-emoji { font-size: 20px; }
-        .scan-name { font-size: 14px; font-weight: 600; color: var(--text); }
-        .scan-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
-        .badge-fresh { background: #dcfce7; color: #166534; }
+        @keyframes fadeInRow {
+          from { opacity: 0; transform: translateY(6px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .scan-row:last-child { border-bottom: none; }
+        .scan-row:hover { background: #f0fdf4; }
+
+        .scan-food { display: flex; align-items: center; gap: 12px; }
+        .scan-emoji-wrap {
+          width: 40px; height: 40px;
+          background: #f0fdf4;
+          border-radius: 12px;
+          display: flex; align-items: center; justify-content: center;
+          font-size: 22px;
+          border: 1px solid #dcfce7;
+        }
+        .scan-name { font-size: 15px; font-weight: 600; color: var(--text); }
+
+        .scan-badge {
+          display: inline-flex; align-items: center; gap: 6px;
+          font-size: 12px; font-weight: 700;
+          padding: 6px 14px; border-radius: 20px;
+          width: fit-content;
+        }
+        .badge-fresh  { background: #dcfce7; color: #166534; }
         .badge-spoiled { background: #fef2f2; color: #991b1b; }
-        .scan-conf { font-size: 13px; font-weight: 700; color: var(--text-2); }
-        .scan-time { font-size: 12px; color: var(--text-muted); }
+
+        .conf-wrap {
+          display: flex; align-items: center; gap: 10px;
+        }
+        .conf-bar-bg {
+          flex: 1; height: 7px; background: #f1f5f9;
+          border-radius: 20px; overflow: hidden;
+          max-width: 140px;
+        }
+        .conf-bar-fill {
+          height: 100%; border-radius: 20px;
+          transition: width 1s ease;
+        }
+        .scan-conf {
+          font-size: 13px; font-weight: 700;
+          color: var(--text-2); min-width: 36px;
+        }
+        .scan-time {
+          font-size: 13px; color: var(--text-muted);
+          display: flex; align-items: center; gap: 4px;
+        }
+
+        .scans-footer {
+          padding: 16px 28px;
+          border-top: 1px solid var(--border);
+          background: #fafafa;
+        }
         .view-all-btn {
-          margin-top: 16px; width: 100%; padding: 10px;
+          width: 100%; padding: 11px;
           background: #f0fdf4; color: var(--fresh-green);
           border: 1px solid #bbf7d0; border-radius: var(--radius-sm);
           font-size: 13px; font-weight: 700;
           transition: var(--transition);
         }
         .view-all-btn:hover { background: var(--fresh-green); color: white; }
-
-        /* Donut card */
-        .donut-big-wrap { display: flex; justify-content: center; padding: 16px 0; }
-        .donut-legend { display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; }
-        .legend-item { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; color: var(--text-2); }
-        .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-        .donut-tip { background: #fefce8; border: 1px solid #fde68a; border-radius: var(--radius-sm); padding: 10px 14px; font-size: 13px; color: #92400e; }
 
         /* ── Quick Actions ── */
         .quick-actions { position: relative; z-index: 1; margin-bottom: 28px; }
@@ -486,17 +482,45 @@ export default function Home() {
           100% { transform: translateX(-100%); }
         }
 
+        /* ── Animations ── */
+        .animate-fadeUp { animation: fadeUp 0.6s ease both; }
+        .delay-2 { animation-delay: 0.1s; }
+        .delay-3 { animation-delay: 0.2s; }
+        .delay-4 { animation-delay: 0.3s; }
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes spin-slow { to { transform: rotate(360deg); } }
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50%      { transform: translateY(-12px); }
+        }
+        @keyframes blob {
+          0%, 100% { transform: translate(0,0) scale(1); }
+          33%      { transform: translate(20px,-20px) scale(1.05); }
+          66%      { transform: translate(-15px,10px) scale(0.96); }
+        }
+
         /* ── Responsive ── */
-        @media (max-width: 1100px) {
-          .dashboard-grid { grid-template-columns: 1fr 1fr; }
-          .card-donut { grid-column: 1 / -1; }
+        @media (max-width: 900px) {
+          .scans-table-header,
+          .scan-row {
+            grid-template-columns: 1fr 130px 1fr;
+          }
+          .scan-row > .scan-time,
+          .scans-table-header > span:last-child { display: none; }
         }
         @media (max-width: 768px) {
           .home-page { padding: 20px 16px 40px; }
           .hero-banner { flex-direction: column; padding: 32px 24px; gap: 32px; }
           .hero-visual { width: 220px; height: 220px; }
           .hero-title { font-size: 30px; }
-          .dashboard-grid { grid-template-columns: 1fr; }
+          .scans-table-header,
+          .scan-row { grid-template-columns: 1fr 120px; padding: 12px 16px; }
+          .scans-table-header span:nth-child(n+3),
+          .scan-row > *:nth-child(n+3) { display: none; }
+          .scans-section-header { flex-direction: column; align-items: flex-start; }
           .actions-grid { grid-template-columns: 1fr; }
         }
       `}</style>
