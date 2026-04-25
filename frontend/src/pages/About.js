@@ -1,10 +1,4 @@
 export default function About() {
-  const team = [
-    { name: "Ishika Garg",    role: "Backend Developer", emoji: "👩‍💻", color: "#16a34a" },
-    { name: "Vanshika Gupta",  role: "ML Engineer",          emoji: "🤖",   color: "#2563eb" },
-    { name: "Kajal Chaudhary",  role: "Frontend Developer",    emoji: "⚙️",   color: "#8b5cf6" }
-    ];
-
   const stack = [
     { label: "React.js",      cat: "Frontend",       emoji: "⚛️",  color: "#06b6d4" },
     { label: "FastAPI",       cat: "Backend",        emoji: "🐍",  color: "#059669" },
@@ -95,54 +89,12 @@ export default function About() {
         </div>
       </div>
 
-      {/* ── Stats Row ── */}
-      <div className="about-stats">
-        {[
-          { val: "50K+",  label: "Training Images", emoji: "🖼️" },
-          { val: "94%",   label: "Overall Accuracy", emoji: "✅" },
-          { val: "30+",   label: "Food Categories",  emoji: "🥗" },
-          { val: "<50ms", label: "Inference Time",   emoji: "⚡" },
-        ].map(({ val, label, emoji }) => (
-          <div key={label} className="astat-card">
-            <div className="astat-emoji">{emoji}</div>
-            <div className="astat-val">{val}</div>
-            <div className="astat-lbl">{label}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* ── Team ── */}
-      <div className="section">
-        <div className="section-label">👥 People</div>
-        <h2 className="section-heading">Meet the Team</h2>
-        <div className="team-grid">
-          {team.map(({ name, role, emoji, color }) => (
-            <div key={name} className="team-card" style={{ "--c": color }}>
-              <div className="team-avatar" style={{ background: `${color}18`, color }}>
-                {emoji}
-              </div>
-              <div className="team-name">{name}</div>
-              <div className="team-role">{role}</div>
-              <div className="team-bar" style={{ background: `linear-gradient(90deg, ${color}, ${color}88)` }} />
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* ── Footer Banner ── */}
       <div className="about-footer-banner">
         <div className="afb-glow" />
         <div className="afb-badge">FreshScan AI</div>
         <h3 className="afb-title">Built for Better Food Safety</h3>
         <p className="afb-sub">A semester project by passionate students. Reducing food waste, one scan at a time.</p>
-        <div className="afb-divider" />
-        <div className="afb-stats">
-          <div className="afb-stat"><span className="afb-stat-val">94%</span><span className="afb-stat-label">Accuracy</span></div>
-          <div className="afb-stat-sep" />
-          <div className="afb-stat"><span className="afb-stat-val">30+</span><span className="afb-stat-label">Categories</span></div>
-          <div className="afb-stat-sep" />
-          <div className="afb-stat"><span className="afb-stat-val">50K+</span><span className="afb-stat-label">Images</span></div>
-        </div>
       </div>
 
       <style>{`
@@ -185,7 +137,7 @@ export default function About() {
           margin: 0 auto; line-height: 1.8;
         }
 
-        /* Mission — redesigned */
+        /* Mission */
         .mission-banner {
           position: relative; z-index: 1;
           background: white;
@@ -271,44 +223,7 @@ export default function About() {
         .stack-label { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
         .stack-cat { font-size: 12px; color: var(--text-muted); font-weight: 600; }
 
-        /* Stats */
-        .about-stats {
-          position: relative; z-index: 1;
-          display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
-          max-width: 1000px; margin: 0 auto 52px;
-          animation: fadeUp 0.6s ease 0.2s both;
-        }
-        .astat-card {
-          background: white; border: 1px solid var(--border);
-          border-radius: var(--radius-lg); padding: 28px;
-          text-align: center; box-shadow: var(--shadow-sm);
-          transition: var(--spring);
-        }
-        .astat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-        .astat-emoji { font-size: 32px; margin-bottom: 10px; }
-        .astat-val { font-family: var(--font-display); font-size: 32px; font-weight: 900; color: var(--fresh-green); margin-bottom: 4px; }
-        .astat-lbl { font-size: 13px; color: var(--text-muted); font-weight: 600; }
-
-        /* Team */
-        .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
-        .team-card {
-          background: white; border: 1px solid var(--border);
-          border-radius: var(--radius-lg); padding: 28px 20px;
-          text-align: center; box-shadow: var(--shadow-sm);
-          transition: var(--spring); position: relative; overflow: hidden;
-        }
-        .team-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-color: var(--c); }
-        .team-avatar {
-          width: 64px; height: 64px; border-radius: 20px;
-          font-size: 30px; display: flex; align-items: center; justify-content: center;
-          margin: 0 auto 14px; transition: var(--spring);
-        }
-        .team-card:hover .team-avatar { transform: scale(1.1) rotate(5deg); }
-        .team-name { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
-        .team-role { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; }
-        .team-bar { height: 3px; border-radius: 20px; }
-
-        /* Footer Banner — redesigned */
+        /* Footer Banner */
         .about-footer-banner {
           position: relative; z-index: 1;
           background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f2027 100%);
@@ -339,34 +254,29 @@ export default function About() {
           color: white; margin-bottom: 12px; letter-spacing: -0.5px;
         }
         .afb-sub { font-size: 15px; color: #94a3b8; line-height: 1.7; max-width: 480px; margin: 0 auto; }
-        .afb-divider {
-          width: 60px; height: 2px;
-          background: linear-gradient(90deg, #16a34a, #0ea5e9);
-          border-radius: 2px; margin: 28px auto 24px;
+
+        /* Animations */
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
-        .afb-stats { display: flex; justify-content: center; align-items: center; gap: 0; }
-        .afb-stat { display: flex; flex-direction: column; align-items: center; padding: 0 32px; }
-        .afb-stat-val { font-family: var(--font-display); font-size: 26px; font-weight: 900; color: #4ade80; }
-        .afb-stat-label { font-size: 12px; color: #64748b; font-weight: 600; margin-top: 2px; }
-        .afb-stat-sep { width: 1px; height: 36px; background: rgba(255,255,255,0.1); }
+        @keyframes blob {
+          0%, 100% { transform: translate(0,0) scale(1); }
+          33%      { transform: translate(20px,-20px) scale(1.05); }
+          66%      { transform: translate(-15px,10px) scale(0.96); }
+        }
 
         /* Responsive */
         @media (max-width: 900px) {
           .about-page { padding: 24px 16px 40px; }
           .steps-grid { grid-template-columns: repeat(2, 1fr); }
           .stack-grid { grid-template-columns: repeat(2, 1fr); }
-          .team-grid { grid-template-columns: repeat(2, 1fr); }
-          .about-stats { grid-template-columns: repeat(2, 1fr); }
           .about-title { font-size: 36px; }
           .mission-inner { flex-direction: column; gap: 16px; }
-          .afb-stat { padding: 0 18px; }
         }
         @media (max-width: 500px) {
-          .steps-grid, .stack-grid, .team-grid, .about-stats { grid-template-columns: 1fr; }
+          .steps-grid, .stack-grid { grid-template-columns: 1fr; }
           .about-footer-banner { padding: 36px 24px; }
-          .afb-stats { gap: 0; }
-          .afb-stat { padding: 0 12px; }
-          .afb-stat-val { font-size: 20px; }
         }
       `}</style>
     </div>
